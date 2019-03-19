@@ -1,0 +1,49 @@
+﻿<div id="container" class="container-fluid was-validated">
+    <h1>Palindrome</h1>
+    <div *ngIf="showSuccess">
+        <div class="alert alert-success" role="alert">
+            <strong>Success!</strong> You added phrase sucessfully! Id is {{id}}
+        </div>
+        <p>Do you want to add a new phrase?</p>
+        <button type="button" class="btn btn-primary" (click)="submitAgain()">Submit again</button>
+    </div>
+    <div *ngIf="showError" class="alert alert-danger" role="alert">
+        <strong><span class="fa fa-exclamation-triangle fa-fw"></span> The following errors occured</strong>
+        <ul>
+            <li *ngFor="let errorMsg of errorMessages">{{errorMsg.message}}</li>
+        </ul>
+    </div>
+    <form *ngIf="!showSuccess" role="form" name="form" class="needs-validation" [formGroup]="form" novalidate>
+        <div class="form-group">
+            <label for="phrase">Phrase</label>
+            <input type="text" id="phrase" class="form-control" placeholder="Enter a palidnrome" maxlength="128" formControlName="phrase">
+            <div *ngIf="!form.controls.phrase?.valid && (!form.controls.phrase?.pristine || triedToSubmitForm)" class="alert alert-danger">
+                <div *ngIf="form.controls.phrase.errors">
+                    <div [ngSwitch]="object.keys(form.controls.phrase.errors)[0]">
+                        <div *ngSwitchCase="'pattern'">Invalid format</div>
+                        <div *ngSwitchCase="'required'">Field is required</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary" (click)="submit()">Submit</button>
+    </form>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Id</th>
+                <th>Phrase</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of phrases; let idx=index">
+                <th scope="row">{{idx+1}}</th>
+                <td>{{item.id}}</td>
+                <td>{{item.phrase}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
